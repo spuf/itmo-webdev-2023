@@ -4,20 +4,21 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
     AuthModule.forRoot({
-      connectionURI:
-        'https://dev-a5027e51ddd511eda055f1cdfed2bc53-eu-west-1.aws.supertokens.io:3568',
-      apiKey: '709WXJH1i6kYhPZXip3woreRc3o4MG',
+      connectionURI: process.env.SUPERTOKENS_URI,
+      apiKey: process.env.SUPERTOKENS_KEY,
       appInfo: {
         appName: 'project-name',
-        apiDomain: 'http://localhost:3000',
-        websiteDomain: 'http://localhost:3000',
+        apiDomain: process.env.ORIGIN,
+        websiteDomain: process.env.ORIGIN,
         apiBasePath: '/api',
         websiteBasePath: '/auth',
       },

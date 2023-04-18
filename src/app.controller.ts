@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { SessionContainer } from 'supertokens-node/recipe/session';
 import { AuthGuard } from './auth/auth.guard';
 import { Session } from './auth/session.decorator';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {

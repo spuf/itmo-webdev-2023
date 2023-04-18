@@ -6,9 +6,7 @@
 <script>
   supertokens.init({
     appInfo: {
-      apiDomain: 'http://localhost:3000',
       apiBasePath: '/api',
-      appName: '...',
     },
     recipeList: [supertokensSession.init(), supertokensEmailPassword.init()],
   });
@@ -103,8 +101,8 @@
 </script>
 
 <div>
-  Email <input name="email" /><br />
-  Password <input name="password" /><br />
+  Email <input name="email" value="demo@example.com" /><br />
+  Password <input name="password" value="1234567e" /><br />
   <button
     onclick="signUpClicked(document.getElementsByName('email')[0].value, document.getElementsByName('password')[0].value)"
   >
