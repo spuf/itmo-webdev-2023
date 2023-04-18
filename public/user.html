@@ -6,6 +6,8 @@
 <script>
   supertokens.init({
     appInfo: {
+      appName: 'project-name',
+      apiDomain: `${location.protocol}//${location.host}`,
       apiBasePath: '/api',
     },
     recipeList: [supertokensSession.init(), supertokensEmailPassword.init()],
