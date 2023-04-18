@@ -16,7 +16,6 @@ export class AppController {
   @Get('test')
   @UseGuards(new AuthGuard())
   async getTest(@Session() session: SessionContainer): Promise<string> {
-    // TODO: magic
-    return 'magic';
+    return 'authorized';
   }
 }
