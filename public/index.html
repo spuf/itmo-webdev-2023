@@ -1,0 +1,129 @@
+<!-- https://supertokens.com/docs/emailpassword/custom-ui/init/frontend -->
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/website.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/supertokens.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/session.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/emailpassword.js"></script>
+<script>
+  supertokens.init({
+    appInfo: {
+      apiDomain: 'http://localhost:3000',
+      apiBasePath: '/api',
+      appName: '...',
+    },
+    recipeList: [supertokensSession.init(), supertokensEmailPassword.init()],
+  });
+</script>
+
+<!-- https://supertokens.com/docs/emailpassword/custom-ui/email-password-login -->
+<script>
+  async function signUpClicked(email, password) {
+    try {
+      let response = await supertokensEmailPassword.signUp({
+        formFields: [
+          {
+            id: 'email',
+            value: email,
+          },
+          {
+            id: 'password',
+            value: password,
+          },
+        ],
+      });
+
+      if (response.status === 'FIELD_ERROR') {
+        // one of the input formFields failed validaiton
+        response.formFields.forEach((formField) => {
+          if (formField.id === 'email') {
+            // Email validation failed (for example incorrect email syntax),
+            // or the email is not unique.
+            window.alert(formField.error);
+          } else if (formField.id === 'password') {
+            // Password validation failed.
+            // Maybe it didn't match the password strength
+            window.alert(formField.error);
+          }
+        });
+      } else {
+        // sign up successful. The session tokens are automatically handled by
+        // the frontend SDK.
+        window.location.href = '/user.html';
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.isSuperTokensGeneralError === true) {
+        // this may be a custom error message sent from the API by you.
+        window.alert(err.message);
+      } else {
+        window.alert('Oops! Something went wrong.');
+      }
+    }
+  }
+
+  async function signInClicked(email, password) {
+    try {
+      let response = await supertokensEmailPassword.signIn({
+        formFields: [
+          {
+            id: 'email',
+            value: email,
+          },
+          {
+            id: 'password',
+            value: password,
+          },
+        ],
+      });
+
+      if (response.status === 'FIELD_ERROR') {
+        // one of the input formFields failed validaiton
+        response.formFields.forEach((formField) => {
+          if (formField.id === 'email') {
+            // Email validation failed (for example incorrect email syntax).
+            window.alert(formField.error);
+          }
+        });
+      } else if (response.status === 'WRONG_CREDENTIALS_ERROR') {
+        window.alert('Email password combination is incorrect.');
+      } else {
+        // sign in successful. The session tokens are automatically handled by
+        // the frontend SDK.
+        window.location.href = '/user.html';
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.isSuperTokensGeneralError === true) {
+        // this may be a custom error message sent from the API by you.
+        window.alert(err.message);
+      } else {
+        window.alert('Oops! Something went wrong.');
+      }
+    }
+  }
+</script>
+
+<div>
+  Email <input name="email" /><br />
+  Password <input name="password" /><br />
+  <button
+    onclick="signUpClicked(document.getElementsByName('email')[0].value, document.getElementsByName('password')[0].value)"
+  >
+    Sign up
+  </button>
+  <button
+    onclick="signInClicked(document.getElementsByName('email')[0].value, document.getElementsByName('password')[0].value)"
+  >
+    Log in
+  </button>
+</div>
+
+<hr />
+
+<script>
+  fetch('/test')
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById('test').innerText = data;
+    });
+</script>
+<div id="test"></div>

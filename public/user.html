@@ -1,0 +1,36 @@
+<!-- https://supertokens.com/docs/emailpassword/custom-ui/init/frontend -->
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/website.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/supertokens.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/session.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/supertokens/supertokens-web-js/bundle/emailpassword.js"></script>
+<script>
+  supertokens.init({
+    appInfo: {
+      apiDomain: 'http://localhost:3000',
+      apiBasePath: '/api',
+      appName: '...',
+    },
+    recipeList: [supertokensSession.init(), supertokensEmailPassword.init()],
+  });
+</script>
+
+<!-- https://supertokens.com/docs/emailpassword/custom-ui/sign-out -->
+<script>
+  async function logout() {
+    await supertokensSession.signOut();
+    window.location.href = '/';
+  }
+</script>
+
+<div>
+  <button onclick="logout()">Logout</button>
+</div>
+<hr />
+<script>
+  fetch('/test')
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById('test').innerText = data;
+    });
+</script>
+<div id="test"></div>
